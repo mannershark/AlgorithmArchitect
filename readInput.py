@@ -9,11 +9,12 @@ for line in f:
         print(type(f.readline))
         x = f.readline().rstrip().split(",")
         y = f.readline().rstrip().split(",")
+        rot = f.readline().rstrip()
         print(x)
         print(rs.IsPoint(x))
         box = cornersToBox(x,y)
         center = rs.PointDivide(rs.PointAdd(x,y), 2)
-        xform = rs.XformRotation2(45, (0,0,1), center)
+        xform = rs.XformRotation2(float(rot), (0,0,1), center)
         newBox = []
         for point in box:
             newBox.append(rs.PointTransform(point, xform))
