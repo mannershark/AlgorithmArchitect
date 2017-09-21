@@ -19,7 +19,7 @@ def readFile():
             y = f.readline().rstrip().split(",")
             plot.append(x)
             plot.append(y)
-            drawBox(x, y, 0)
+            drawPlot(x, y)
     f.close()
 
 def drawBox(x, y, rot):
@@ -31,5 +31,15 @@ def drawBox(x, y, rot):
         newBox.append(rs.PointTransform(point, xform))
     rs.AddBox(newBox)
     buildings.append(newBox)
+
+def drawPlot(x, y):
+    rs.AddLine(x, (x[0], y[1], x[2]))
+    rs.AddLine(x, (y[0], x[1], x[2]))
+    rs.AddLine(y, (x[0], y[1], x[2]))
+    rs.AddLine(y, (y[0], x[1], x[2]))
+
+def findClosestEdges(x, y):
+    for building in buildings:
+        
 
 readFile()
