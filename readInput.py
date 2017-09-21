@@ -7,13 +7,13 @@ def cornersToBox(p1, p2):
     return [(p1[0],p1[1],p1[2]),(p2[0],p1[1],p1[2]),(p2[0],p2[1],p1[2]),(p1[0],p2[1],p1[2]),(p1[0],p1[1],p2[2]),(p2[0],p1[1],p2[2]),(p2[0],p2[1],p2[2]),(p1[0],p2[1],p2[2])]
 
 def readFile():
-    f = open('test1.tp1t', 'r')
+    f = open('test1.txt', 'r')
     for line in f:
         if(line == 'Building\n'):
             p1 = f.readline().rstrip().split(",")
             p2 = f.readline().rstrip().split(",")
             rot = f.readline().rstrip()
-            drawBop1(p1, p2, rot)
+            drawBox(p1, p2, rot)
         if(line == "Plot\n"):
             p1 = f.readline().rstrip().split(",")
             p2 = f.readline().rstrip().split(",")
