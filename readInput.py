@@ -38,8 +38,9 @@ def drawPlot(x, y):
     rs.AddLine(y, (x[0], y[1], x[2]))
     rs.AddLine(y, (y[0], x[1], x[2]))
 
-def findClosestEdges(x, y):
-    for building in buildings:
-        
+#def findClosestEdges(x, y):
+#    for building in buildings:
+#        for point in building:
+#            
 
 readFile()
