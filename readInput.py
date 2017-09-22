@@ -65,7 +65,8 @@ def findClosestEdges(point):
             if(dist < min):
                 min = dist
                 closest = edge
-            closestEdges.append(edge)
+        print("Found closest edge")
+        closestEdges.append(edge)
 
 ##
 # Returns 4 lines that define the base of the building
@@ -87,8 +88,9 @@ def translateEdges(edges, point):
     result = []
     for edge in edges:
         vector = getOffsetDirection(edge, point)
+        vector[2] = 0
         vector = vector/rs.VectorLength(vector) #Normalize vector to length 1
-        vector = rs.VectorScale(vector, 5)
+        vector = rs.VectorScale(vector, 20)
         xform = rs.XformTranslation(vector)
         newEdge = rs.LineTransform(edge, xform)
         result.append(newEdge)
@@ -96,11 +98,9 @@ def translateEdges(edges, point):
 
 readFile()
 drawBuildings(buildings)
-print(plot)
 findClosestEdges(plotCenter)
 offsets = translateEdges(closestEdges, plotCenter)
 for edge in offsets:
-    print("Edge: \n")
     print(edge)
-    rs.AddLine((edge[0], edge[1], edge[2]), (edge[3],edge[4],edge[5]))
+    rs.AddLine(edge.From, edge.To)
 drawPlot(plot)
