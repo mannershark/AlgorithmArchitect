@@ -4,6 +4,7 @@ from itertools import izip, islice
 buildings = [] #Set of buildings
 plot = [] #Plot points
 closestEdges = [] #Closest edge for each building to the plot
+plotCenter = (0,0,0)
 
 ##
 # Translate 2 diagonal points into the 8 box coordinates
@@ -23,9 +24,10 @@ def readFile():
         if(line == "Plot\n"): #Plot has 2 3D points
             p1 = f.readline().rstrip().split(",")
             p2 = f.readline().rstrip().split(",")
-            plot.append(p1)
-            plot.append(p2)
-            drawPlot(p1, p2)
+            global plot
+            plot = [p1, (p1[0], p2[1], p1[2]), p2, (p2[0], p1[1], p1[2]), p1]
+            global plotCenter
+            plotCenter = rs.PointDivide(rs.PointAdd(p1, p2),2)
     f.close()
 
 ##
@@ -49,19 +51,16 @@ def drawBuildings(buildings):
 
 ##
 # Draw a rectangle given 2 points
-def drawPlot(p1, p2):
-    rs.AddLine(p1, (p1[0], p2[1], p1[2]))
-    rs.AddLine(p1, (p2[0], p1[1], p1[2]))
-    rs.AddLine(p2, (p1[0], p2[1], p1[2]))
-    rs.AddLine(p2, (p2[0], p1[1], p1[2]))
+def drawPlot(plot):
+    rs.AddPolyline(plot)
 
 ##
 # Finds the closest edge for all buildings and adds it to closestEdges
-def findClosestEdges(p1, p2):
+def findClosestEdges(point):
     for building in buildings:
         for edge in getEdges(building):
             min = float("Inf")
-            dist = rs.LineMinDistanceTo(edge, rs.PointDivide(rs.PointAdd(p1, p2),2))
+            dist = rs.LineMinDistanceTo(edge, point)
             closest = None
             if(dist < min):
                 min = dist
@@ -77,6 +76,31 @@ def getEdges(building):
     edges.append([building[3], building[0]])
     return edges
 
+##
+# Get offset direction for an edge
+def getOffsetDirection(edge, point):
+    p2 = rs.LineClosestPoint(edge, point)
+    vector = rs.PointSubtract(point,p2)
+    return vector
+
+def translateEdges(edges, point):
+    result = []
+    for edge in edges:
+        vector = getOffsetDirection(edge, point)
+        vector = vector/rs.VectorLength(vector) #Normalize vector to length 1
+        vector = rs.VectorScale(vector, 5)
+        xform = rs.XformTranslation(vector)
+        newEdge = rs.LineTransform(edge, xform)
+        result.append(newEdge)
+    return result
+
 readFile()
 drawBuildings(buildings)
-findClosestEdges(plot[0],plot[1])
+print(plot)
+findClosestEdges(plotCenter)
+offsets = translateEdges(closestEdges, plotCenter)
+for edge in offsets:
+    print("Edge: \n")
+    print(edge)
+    rs.AddLine((edge[0], edge[1], edge[2]), (edge[3],edge[4],edge[5]))
+drawPlot(plot)
