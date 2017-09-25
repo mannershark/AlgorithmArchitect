@@ -58,15 +58,15 @@ def drawPlot(plot):
 # Finds the closest edge for all buildings and adds it to closestEdges
 def findClosestEdges(point):
     for building in buildings:
+        min = float("Inf")
+        closest = None
         for edge in getEdges(building):
-            min = float("Inf")
             dist = rs.LineMinDistanceTo(edge, point)
-            closest = None
             if(dist < min):
                 min = dist
                 closest = edge
-        print("Found closest edge")
-        closestEdges.append(edge)
+        rs.AddLine(closest[0], closest[1])
+        closestEdges.append(closest)
 
 ##
 # Returns 4 lines that define the base of the building
@@ -101,6 +101,5 @@ drawBuildings(buildings)
 findClosestEdges(plotCenter)
 offsets = translateEdges(closestEdges, plotCenter)
 for edge in offsets:
-    print(edge)
     rs.AddLine(edge.From, edge.To)
 drawPlot(plot)
