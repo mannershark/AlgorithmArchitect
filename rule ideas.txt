@@ -1,0 +1,29 @@
+Foyer
+-Size: 
+-Location: Should connect with everything, central
+
+Circulation
+-Amount of intersections, range
+
+Type stays by type?
+Amount of rooms per type?
+Good size for that room rype?
+
+Exhibition hall
+- Total exhibition space
+- Amount of spaces
+
+Conference center
+- Range of size
+- Connect to foyer
+
+Courtyards
+- Gives visual connections and light
+--> More light needed, then add a courtyard
+
+Amount of light?
+
+
+Breps to points-> voronoi? -> Grouped breps
+Brep | Brep to find adjacent ones?
+If intersect, add an edge to create a graph
